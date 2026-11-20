@@ -14,13 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioService {
-    private static final String URL = "https://jsonplaceholder.typicode.com/users";
+    private static final String URL = System.getenv("SUPABASE_CUSTOMERS_URL");
+    private static final String API_KEY = System.getenv("SUPABASE_API_KEY");
 
     public List<Usuario> obtenerUsuarios() throws IOException, InterruptedException {
+        if (URL == null || URL.isBlank() || API_KEY == null || API_KEY.isBlank()) {
+            throw new IOException("Configure SUPABASE_CUSTOMERS_URL y SUPABASE_API_KEY antes de ejecutar.");
+        }
+
         HttpClient cliente = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL))
                 .timeout(Duration.ofSeconds(15))
+                .header("apikey", API_KEY)
                 .GET()
                 .build();
 
@@ -29,7 +35,7 @@ public class UsuarioService {
         );
 
         if (response.statusCode() != 200) {
-            throw new IOException("Error al obtener el usuario");
+            throw new IOException("Error al consultar clientes. Código HTTP: " + response.statusCode());
         }
 
         ObjectMapper mapper = new ObjectMapper();
@@ -42,12 +48,19 @@ public class UsuarioService {
         for (JsonNode nodo : datos) {
             Usuario usuario = new Usuario(
                     nodo.path("id").asInt(),
-                    nodo.path("name").asText(),
-                    nodo.path("username").asText(),
+                    nodo.path("first_name").asText(),
+                    nodo.path("last_name").asText(),
                     nodo.path("email").asText(),
                     nodo.path("phone").asText(),
-                    nodo.path("address").path("city").asText(),
-                    nodo.path("company").path("name").asText()
+                    nodo.path("date_of_birth").asText(),
+                    nodo.path("country").asText(),
+                    nodo.path("city").asText(),
+                    nodo.path("address").asText(),
+                    nodo.path("annual_income").asDouble(),
+                    nodo.path("credit_score").asInt(),
+                    nodo.path("has_unpaid_debt").asBoolean(),
+                    nodo.path("unpaid_debt_amount").asDouble(),
+                    nodo.path("status").asText()
             );
             usuarios.add(usuario);
         }

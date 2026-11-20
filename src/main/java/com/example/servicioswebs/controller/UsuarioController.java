@@ -28,34 +28,63 @@ public class UsuarioController {
     private TableColumn<Usuario, Integer> colId;
 
     @FXML
-    private TableColumn<Usuario, String> colNombre;
+    private TableColumn<Usuario, String> colFirstName;
 
     @FXML
-    private TableColumn<Usuario, String> colUsername;
+    private TableColumn<Usuario, String> colLastName;
 
     @FXML
-    private TableColumn<Usuario, String> colCorreo;
+    private TableColumn<Usuario, String> colEmail;
 
     @FXML
-    private TableColumn<Usuario, String> colTelefono;
+    private TableColumn<Usuario, String> colPhone;
 
     @FXML
-    private TableColumn<Usuario, String> colCiudad;
+    private TableColumn<Usuario, String> colDateOfBirth;
 
     @FXML
-    private TableColumn<Usuario, String> colEmpresa;
+    private TableColumn<Usuario, String> colCountry;
+
+    @FXML
+    private TableColumn<Usuario, String> colCity;
+
+    @FXML
+    private TableColumn<Usuario, String> colAddress;
+
+    @FXML
+    private TableColumn<Usuario, Double> colAnnualIncome;
+
+    @FXML
+    private TableColumn<Usuario, Integer> colCreditScore;
+
+    @FXML
+    private TableColumn<Usuario, Boolean> colHasUnpaidDebt;
+
+    @FXML
+    private TableColumn<Usuario, Double> colUnpaidDebtAmount;
+
+    @FXML
+    private TableColumn<Usuario, String> colStatus;
 
     private final UsuarioService usuarioService = new UsuarioService();
 
     @FXML
     public void initialize() {
+        tablaUsuarios.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
-        colCorreo.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        colCiudad.setCellValueFactory(new PropertyValueFactory<>("ciudad"));
-        colEmpresa.setCellValueFactory(new PropertyValueFactory<>("empresa"));
+        colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
+        colCountry.setCellValueFactory(new PropertyValueFactory<>("country"));
+        colCity.setCellValueFactory(new PropertyValueFactory<>("city"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colAnnualIncome.setCellValueFactory(new PropertyValueFactory<>("annualIncome"));
+        colCreditScore.setCellValueFactory(new PropertyValueFactory<>("creditScore"));
+        colHasUnpaidDebt.setCellValueFactory(new PropertyValueFactory<>("hasUnpaidDebt"));
+        colUnpaidDebtAmount.setCellValueFactory(new PropertyValueFactory<>("unpaidDebtAmount"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
     }
 
     @FXML
@@ -74,7 +103,7 @@ public class UsuarioController {
         task.setOnSucceeded(e -> {
             List<Usuario> usuarios = task.getValue();
             tablaUsuarios.setItems(FXCollections.observableArrayList(usuarios));
-            lblEstado.setText("Usuarios encontrados: " + usuarios.size());
+            lblEstado.setText("Clientes encontrados: " + usuarios.size());
         });
 
         task.setOnFailed(e -> {
